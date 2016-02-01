@@ -111,7 +111,10 @@ class CssParserService
         $property_count = 0;
         $unique_selector_count = 0;
         $colors = [];
+        $background_colors = [];
         $selectors = [];
+        $fonts = [];
+        $font_count = 0;
         
         foreach($parse_results as $selector => $properties):
             
@@ -122,8 +125,24 @@ class CssParserService
             
             # Get our colors
             foreach($properties as $property_name => $property_value) {
+                # If it looks like this property is defining a background-color, let's add it to our list
+                if(stripos($property_name, 'background-color') !== false) {
+                    # If the color is in RGBA(X,X,X,X) format
+                    if(stripos($property_value, 'rgba') !== false) {
+                        $background_colors[] = $property_value;
+                    }
+                    # If the color is in #XXX or #XXXXXX format
+                    elseif(preg_match('/([#0-9A-Fa-f]{3,7})/', $property_value, $matches)) {
+                        # Gets the match and adds it to colors
+                        $background_colors[] = $matches[1];
+                    } 
+                    # Otherwise, maybe they did something like "BLUE"
+                    else {
+                        $background_colors[] = $property_value;
+                    }
+                }
                 # If it looks like this property is defining a color, let's add it to our list
-                if(stripos($property_name, 'color') !== false) {
+                elseif(stripos($property_name, 'color') !== false) {
                     # If the color is in RGBA(X,X,X,X) format
                     if(stripos($property_value, 'rgba') !== false) {
                         $colors[] = $property_value;
@@ -132,10 +151,20 @@ class CssParserService
                     elseif(preg_match('/([#0-9A-Fa-f]{3,7})/', $property_value, $matches)) {
                         # Gets the match and adds it to colors
                         $colors[] = $matches[1];
-                    } 
+                    }
                     # Otherwise, maybe they did something like "BLUE"
                     else {
                         $colors[] = $property_value;
+                    }
+                }
+            }
+
+            # Get our fonts
+            foreach($properties as $property_name => $property_value) {
+                # If it looks like this property is defining a background-color, let's add it to our list
+                if(stripos($property_name, 'font-family') !== false) {
+                    foreach(explode(',', $property_value) as $family) {
+                        $fonts[] = trim($family);
                     }
                 }
             }
@@ -152,9 +181,13 @@ class CssParserService
             'block_count'           => $block_count,
             'property_count'        => $property_count,
             'color_count'           => count(array_unique($colors)),
+            'background_color_count'=> count(array_unique($background_colors)),
             'unique_selector_count' => count(array_unique($selectors)), # Count only unique selectors
             'unique_selectors'      => array_unique($selectors),
             'colors'                => array_unique($colors),
+            'background_colors'     => array_unique($background_colors),
+            'fonts'                 => array_unique($fonts),
+            'font_count'            => count(array_unique($fonts)),
         ];
     }
 

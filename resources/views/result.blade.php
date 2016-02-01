@@ -56,9 +56,6 @@
             </div>
 
             <div class="row">
-                <div class="col-md-6">
-                    <div id="chart_div"></div>
-                </div>
                 
                 <div class="col-md-6">
                     <table class="table table-striped">
@@ -91,16 +88,42 @@
                             <td><?= number_format($data->color_count); ?></td>
                         </tr>
                         <tr>
+                            <td>Unique Background Colors</td>
+                            <td><?= number_format($data->background_color_count); ?></td>
+                        </tr>
+                        <tr>
                             <td colspan="2">
+                                <div class="text-center">Colors Used</div>
                                 <?php foreach($data->colors as $color): ?>
+                                    <span style="background-color: <?= $color; ?>; height: 10px; width: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <?php endforeach; ?>
+                                <?php foreach($data->background_colors as $color): ?>
                                     <span style="background-color: <?= $color; ?>; height: 10px; width: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                 <?php endforeach; ?>
                             </td>
                         </tr>
                     </table>
                 </div>
+                
+                <div class="col-md-6">
+                    <div id="chart_div"></div>
+                    <table class="table table-striped">
+                        <tr>
+                            <td># of Fonts</td>
+                            <td><?= number_format($data->font_count); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Fonts</td>
+                            <td>
+                                <?php foreach($data->fonts as $font): ?>
+                                <div style="font-family: <?= $font; ?>"><?= $font; ?></div>
+                                <?php endforeach; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
             </div>
-    
         </div> <!-- /container -->
     
         
