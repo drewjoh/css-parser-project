@@ -30,9 +30,9 @@ class Controller extends BaseController
     
     public function postUpload(Request $request)
     {
-        # Make sure we have a file and that it is valid
-        if ( ! $request->hasFile('css_file') OR ! $request->file('css_file')->isValid()) {
-            return back()->with('error', 'problem with file');
+        # Make sure we have a file, that it is valid, and that it is a CSS file
+        if ( ! $request->hasFile('css_file') OR ! $request->file('css_file')->isValid() OR $request->file('css_file')->getClientMimeType() != 'text/css') {
+            echo 'Error with file!'; exit;
         }
         
         # Create a unique file name for this upload
