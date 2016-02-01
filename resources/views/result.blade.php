@@ -32,7 +32,7 @@
             ]);
 
             // Set chart options
-            var options = {'title':'Optimization Chart',
+            var options = {'title':'CSS File Data',
                            'width':400,
                            'height':300};
 
@@ -44,10 +44,66 @@
         
     </head>
     <body>
+
+        <div class="container">
+    
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+    
+            <div class="jumbotron">
+                <h1>CSS Stats</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="chart_div"></div>
+                </div>
+                
+                <div class="col-md-6">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>File Size</td>
+                            <td><?= number_format($data->full_size); ?> bytes</td>
+                        </tr>
+                        <tr>
+                            <td>Data</td>
+                            <td><?= number_format($data->data_size); ?> bytes</td>
+                        </tr>
+                        <tr>
+                            <td>Whitespace</td>
+                            <td><?= number_format($data->whitespace_size); ?> bytes</td>
+                        </tr>
+                        <tr>
+                            <td>Unique Selectors</td>
+                            <td><?= number_format($data->unique_selector_count); ?></td>
+                        </tr>
+                        <tr>
+                            <td># of Properties</td>
+                            <td><?= number_format($data->property_count); ?></td>
+                        </tr>
+                        <tr>
+                            <td># CSS Blocks</td>
+                            <td><?= number_format($data->block_count); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Unique Colors</td>
+                            <td><?= number_format($data->color_count); ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <?php foreach($data->colors as $color): ?>
+                                    <span style="background-color: <?= $color; ?>; height: 10px; width: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                <?php endforeach; ?>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+    
+        </div> <!-- /container -->
+    
         
-        <div id="chart_div"></div>
-        
-        <?php dd($data); ?>
         
     </body>
 </html>
