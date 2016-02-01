@@ -109,7 +109,6 @@ class CssParserService
     {
         $block_count = 0;
         $property_count = 0;
-        $color_count = 0;
         $unique_selector_count = 0;
         $colors = [];
         $selectors = [];
@@ -130,7 +129,7 @@ class CssParserService
                         $colors[] = $property_value;
                     }
                     # If the color is in #XXX or #XXXXXX format
-                    elseif(preg_match('/([#0-9A-Fa-f]{3,6})/', $property_value, $matches)) {
+                    elseif(preg_match('/([#0-9A-Fa-f]{3,7})/', $property_value, $matches)) {
                         # Gets the match and adds it to colors
                         $colors[] = $matches[1];
                     } 
@@ -138,8 +137,6 @@ class CssParserService
                     else {
                         $colors[] = $property_value;
                     }
-                    # Increase our color count
-                    $color_count++;
                 }
             }
             
@@ -154,10 +151,10 @@ class CssParserService
         return [
             'block_count'           => $block_count,
             'property_count'        => $property_count,
-            'color_count'           => $color_count,
+            'color_count'           => count(array_unique($colors)),
             'unique_selector_count' => count(array_unique($selectors)), # Count only unique selectors
             'unique_selectors'      => array_unique($selectors),
-            'colors'                => $colors,
+            'colors'                => array_unique($colors),
         ];
     }
 
