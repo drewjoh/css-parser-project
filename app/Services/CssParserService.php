@@ -85,7 +85,7 @@ class CssParserService
                 # In case we don't have a semi-colon on the last property declaration
                 if($attribute) {
                     # Get our name/value by using the cool list method, assigning the values we get from explode()
-                    list($name, $value) = explode(':', $attribute);
+                    @list($name, $value) = explode(':', $attribute);
                     # Add this data to our final result
                     $results[ $all_matches[1][$count] ][ trim($name) ] = trim($value);
                 }
